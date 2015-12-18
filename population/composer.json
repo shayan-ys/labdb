@@ -1,0 +1,21 @@
+{
+    "name": "labdb",
+    "description": "labdb project Clinic automation",
+    "keywords": ["labdb", "clinic"],
+    "license": "MIT",
+    "type": "project",
+    "require": {
+        "php": ">=5.5.9"
+    },
+    "require-dev": {
+        "fzaninotto/faker": "~1.4"
+    },
+    "autoload-dev": {
+        "classmap": [
+            "tests/TestCase.php"
+        ]
+    },
+    "config": {
+        "preferred-install": "dist"
+    }
+}
