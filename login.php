@@ -42,12 +42,14 @@
 
 <div class="container">
 
-    <div class="col-md-6 col-md-offset-3">
-        <div class="alert alert-danger alert-dismissible" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <strong>Login Error!</strong><?php echo isset($_GET)? isset($_GET['invalidarg'])? $_GET['invalidarg'] :'':''; ?>
+    <?php if(isset($_GET) && isset($_GET['message'])){ ?>
+        <div class="col-md-6 col-md-offset-3">
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <strong>Login Error!</strong><?php echo $_GET['message']; ?>
+            </div>
         </div>
-    </div>
+    <?php } ?>
 
     <form class="form-signin form-horizontal" action="controllers/signin.php" method="post">
         <h2 class="form-signin-heading">Please sign in</h2>

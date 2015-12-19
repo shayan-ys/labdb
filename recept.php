@@ -7,6 +7,13 @@
  */
 require_once 'check_sign.php';
 //checkSign();
+if(isset($_GET) && isset($_GET['id'])) {
+//    $result = $conn->query("SELECT * FROM reception WHERE reception_id = '".$_GET['id']."' LIMIT 1; ");
+//    if($result->num_rows>0){
+//        $row = $result->fetch_assoc();
+//        $_GET['doctor_id'] = $row['doctor_id'];
+//    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -48,8 +55,8 @@ require_once 'check_sign.php';
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar">
-                <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
-                <li><a href="http://localhost/labdb/recept.php">Reception</a></li>
+                <li><a href="#">Overview <span class="sr-only">(current)</span></a></li>
+                <li class="active"><a href="http://localhost/labdb/recept.php">Reception</a></li>
                 <li><a href="#">Analytics</a></li>
                 <li><a href="#">Export</a></li>
             </ul>
@@ -92,14 +99,49 @@ require_once 'check_sign.php';
                 </div>
             </div>
 
+            <form class="form-horizontal" action="controllers/add_reception.php" method="POST">
+                <input name="action" type="hidden" value="<?php echo isset($_GET['doctor_id'])? 'update':'insert'; ?>" />
+                <input name="patient_id" type="hidden" value="<?php echo $_SESSION['id']; ?>" />
+                <?php if(isset($_GET['id'])){ ?>
+                    <input name="reception_id" type="hidden" value="<?php echo $_GET['id']; ?>" />
+                <?php } ?>
+                <h2 class="form-group">Add Reception Form</h2>
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-2 control-label">Doctor</label>
+                    <div class="col-sm-10">
+                        <select class="form-control" name="doctor_id" >
+                            <?php
+//                                $result = $conn->query("SELECT doctor_id, `name`, specialty FROM doctor;");
+//                                if(isset($_GET) && isset($_GET['doctor_id'])) $pre_doctor_id = $_GET['doctor_id'];
+//                                if($result->num_rows>0){
+//                                    while($row = $result->fetch_assoc())
+//                                        echo "<option value='".$row['doctor_id']."'>"
+//                                            .$row['name']." - ".$row['specialty']."</option>";
+//                                }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-primary"><?php echo isset($_GET['doctor_id'])? 'Update':'Submit'; ?></button>
+                    </div>
+                </div>
+            </form>
+
+
             <?php
             require_once 'database.php';
             require_once 'table_generator.php';
-            $result = $conn->query("SELECT first_name As Actor FROM actor limit 10");
-            $table = tableGenerator($result);
+            $result = $conn->query("SELECT actor_id AS '#', first_name FROM actor limit 10");
+            $table = tableGenerator($result
+                ,array(
+                    'delete'=>"http://localhost/labdb/controllers/delete_recept.php?id=",
+                    'edit'=>"http://localhost/labdb/controllers/add_recept.php?id="
+                    ));
             if ($table != false) {
 
-                echo "<h2 class='sub-header'>Medicines Received</h2>";
+                echo "<h2 class='sub-header'>Open Receptions</h2>";
                 echo "<div class='table-responsive'>";
                 echo "<table class='table table-striped'>";
 
